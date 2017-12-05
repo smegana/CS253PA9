@@ -35,7 +35,13 @@ bool hasSuffix(string str, string suffix){
 string getRegion(int region, string str){
 	int vow = 0;
 	
-	for(int i = 0; i < int (str.length()); i++){
+
+	 if(str.find('\'') != std::string::npos){
+		return "";
+         }
+
+
+	for(int i = 0; i < int (str.length()); ++i){
 		char c = str[i];
 		if(c=='a' || c=='A' || c=='e' || c=='E' ||
                 	c=='i' || c=='I' || c=='o' ||
@@ -43,7 +49,8 @@ string getRegion(int region, string str){
                 	c == 'y' || c == 'Y'){
 			vow++;
 							
-			}
+		}
+		
 		else if(vow >= 1){
 			if (region == 2){
                         	return getRegion(1, str.substr(i+1, str.length()-1));
@@ -51,7 +58,8 @@ string getRegion(int region, string str){
 			//cout << "getRegion " << region << " in "
                         //        << str << " substring: " <<
                         //        str.substr(i+1, str.length()-1) << "\n";
-                        return str.substr(i+1, str.length()-1);
+                        return str.substr(i+1, str.length());
+			
 		}
 	}
 	return "";
@@ -117,10 +125,10 @@ bool isShortSyll(string str){
 string step1(string curr){
 	//Determine where it is and what comes after it
 	if (curr.find('\'') == 0){
-		return curr.substr(1, curr.length());
+		curr = curr.substr(1, curr.length());
 	}
 
-	else if (hasSuffix(curr, "'s'")){
+	if (hasSuffix(curr, "'s'")){
 		return curr.substr(0, curr.length() - 3);
 	}
 	
@@ -165,7 +173,7 @@ string step2(string curr){
 			if(c=='a' || c=='A' || c=='e' || c=='E' ||
                 		c=='i' || c=='I' || c=='o' ||
                 		c=='O' || c=='u' || c=='U' ||
-                		c == 'y' || c == 'Y'){
+                		(c == 'y' && i!=0) || (c == 'Y' && i!=0)){
 				vow++;
 			}
 		}

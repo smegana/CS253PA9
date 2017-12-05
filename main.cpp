@@ -149,7 +149,7 @@ int main(int argc, char* argv[])
 
 	std::vector<string> tempwords;
 
-
+	std::vector<double> cl;
 
 
         for(int k = 1; k < int(files.size()); k++){
@@ -160,9 +160,10 @@ int main(int argc, char* argv[])
                 }
 
                 tempwords = punct(tempwords);
-		double cl = CL(tempwords);
+		cl.push_back(CL(tempwords));
 
-		if((cl <= highRL) && (cl >= lowRL)){
+		
+
 			fileNames.push_back(files[k]);
                 	tempwords = cap(tempwords);
 
@@ -198,27 +199,67 @@ int main(int argc, char* argv[])
                 	allFileWords.push_back(Wordscnt(words1));
 
                 	allFileCount.push_back(cnt(words1));
-		}
+		
 
         }
+
+
+	//for(int x = 0; x < (int)allFileWords.size(); x++){
+                /*for(int y = 0; y < (int)allFileWords[0].size(); y++){
+                        cout << allFileWords[0][y] << " " << allFileCount[0][y] << "\n";
+                }
+                cout << "\n\n\n";*/
+        //}
+
+
+
 
 	double highestTFIDF = 0.0;
 	string bestMatch = "";
 	double currtfidf;
 	
+	
+	
 	std::vector< vector<double> > totaltfidf = tfidf(allFileWords, allFileCount);
-	for(int i = 0; i < int(totaltfidf.size()); i++){
-		for(int j = 0; j < int(totaltfidf[i].size()); j++){
-			currtfidf = totaltfidf[i][j];
-			cout << currtfidf << " ";
+        //double currtfidf;
+        //
+        //
+        //
+       
+	/*for(int x = 0; x < totaltfidf.size(); x++){
+		for(int y = 0; y < totaltfidf[x].size(); y++){
+			cout << totaltfidf[x][y] << " ";
 		}
-		//cout << "File: " << fileNames[i] << " Sim: " << currtfidf << "\n";
-		/*if(currtfidf > highestTFIDF){
-			highestTFIDF = currtfidf;
-			bestMatch = fileNames[i];
-		}*/
 		cout << "\n";
-	}	
+	}*/
+
+        //
+        //
+        //
+        for(int i = 0; i < int(totaltfidf[0].size()); i++){
+		if((cl[i] <= highRL) && (cl[i] >= lowRL)){
+                	currtfidf = totaltfidf[0][i+1];
+                	//cout << currtfidf << " ";
+                	//cout << "File: " << fileNames[i] << " Sim: " << currtfidf << "\n";
+                	if(currtfidf > highestTFIDF){
+				highestTFIDF = currtfidf;
+				bestMatch = fileNames[i];
+			}
+		}
+        }
+
+		/*for(int j = 1; j < int(totaltfidf[0].size()); j++){
+			currtfidf = totaltfidf[0][j];
+			cout << currtfidf << " ";
+		
+		cout << "File: " << fileNames[j] << " Sim: " << currtfidf << "\n";
+		if(currtfidf > highestTFIDF){
+			highestTFIDF = currtfidf;
+			bestMatch = fileNames[j];
+		}
+		//cout << "\n";
+		
+	}*/	
 
 	if(bestMatch.length() == 0){
 		cerr << "No file entered in the given range.\n";
