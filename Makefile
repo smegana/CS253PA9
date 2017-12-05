@@ -5,7 +5,7 @@ OBJS = stem.o main.o parse.o except.o tfidf.o readlevel.o
 INCLUDE = -I.
 
 PA7 : $(OBJS)
-	$(CC) $(OBJS) $(LFLAGS) $(INCLUDE) -o PA8
+	$(CC) $(OBJS) $(LFLAGS) $(INCLUDE) -o PA9
 
 stem.o : stem.cpp stem.h
 	$(CC) stem.cpp $(INCLUDE) $(CFLAGS)
@@ -26,4 +26,4 @@ main.o : main.cpp
 	$(CC) main.cpp $(INCLUDE) $(CFLAGS)
 
 clean :
-	-rm *.o PA8
+	-rm *.o PA9
